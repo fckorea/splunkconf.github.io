@@ -1,0 +1,305 @@
+<!-- Page Contents -->
+<div class="ui vertical stripe segment">
+  <div class="ui middle aligned stackable grid container">
+    <div class="row">
+      <div class="wide column">
+        <h3 class="ui header">Splunk Homepage<small><a href="http://www.splunk.com" target="_blank"><i class="fa fa-link"></i></a></small></h3>
+        <!-- <p>Go site: <a href="http://www.splunk.com" target="_blank">http://www.splunk.com</a></p> -->
+        <h3 class="ui header">Splunk Download<small><a href="https://www.splunk.com/en_us/download/splunk-enterprise.html" target="_blank"><i class="fa fa-link"></i></a></small></h3>
+        <!-- <p>Go site: <a href="https://www.splunk.com/en_us/download/splunk-enterprise.html" target="_blank">https://www.splunk.com/en_us/download/splunk-enterprise.html</a></p> -->
+        <h3 class="ui header">Splunk Document<small><a href="http://docs.splunk.com/Documentation" target="_blank"><i class="fa fa-link"></i></a></small></h3>
+        <!-- <p>Go site: <a href="http://docs.splunk.com/Documentation" target="_blank">http://docs.splunk.com/Documentation</a></p> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ui vertical stripe segment" id="make-config">
+  <div class="ui middle aligned stackable grid container">
+    <div class="row">
+      <div class="wide column">
+        <h3 class="ui header">Make config</h3>
+        <p>
+          <div class="ui relaxed divided list">
+            <div class="item">
+              <i class="fa fa-terminal big icon"></i>
+              <div class="content">
+                <a href="#/#cli-config" class="header">CLI Config</a>
+                <div class="description">description</div>
+              </div>
+            </div>
+            <div class="item">
+              <i class="fa fa-book big icon"></i>
+              <div class="content">
+                <a href="#/#data-input" class="header">Data Input</a>
+                <div class="description">description</div>
+              </div>
+            </div>
+            <div class="item">
+              <i class="fa fa-sliders big icon"></i>
+              <div class="content">
+                <a class="header">Data Properties</a>
+                <div class="description">description</div>
+              </div>
+            </div>
+            <div class="item">
+              <i class="fa fa-exchange big icon"></i>
+              <div class="content">
+                <a class="header">Data Transforms</a>
+                <div class="description">description</div>
+              </div>
+            </div>
+            <div class="item">
+              <i class="fa fa-share big icon"></i>
+              <div class="content">
+                <a href="#/#data-output" class="header">Data Output</a>
+                <div class="description">description</div>
+              </div>
+            </div>
+            <div class="item">
+              <i class="fa fa-adjust big icon"></i>
+              <div class="content">
+                <a class="header">Etc.</a>
+                <div class="description">description</div>
+              </div>
+            </div>
+          </div>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- cli config -->
+<div class="ui vertical stripe segment">
+  <div class="ui middle aligned stackable grid container">
+    <div class="row">
+      <div class="wide column">
+        <h3 class="ui header">CLI Config</h3>
+        <p>
+          <div class="ui stacked segment">
+            <div class="five ui green buttons">
+              <button class="ui button" ng-click="setCLICommand(['start|stop'])">Start-Stop</button>
+              <button class="ui button" ng-click="setCLICommand(['enable|disable boot-start'])">Boot-start</button>
+              <button class="ui button" ng-click="setCLICommand(['enable|disable webserver'])">Web server</button>
+              <button class="ui button" ng-click="setCLICommand(['add index &lt;name&gt;'])">Add index</button>
+              <button class="ui button" ng-click="setCLICommand(['stop', 'clean eventdata -index &lt;indexName&gt;', 'start'])">Re-Indexing</button>
+            </div>
+            &nbsp;<br>
+            <div class="ui labeled fluid input">
+              <div class="ui label">
+                $SPLUNK_HOME
+              </div>
+              <input type="text" placeholder="Path..." ng-model="$SPLUNK_HOME" ng-init="$SPLUNK_HOME = ''">
+            </div>
+            <div class="ui segment" ng-init="setCLICommand(['start|stop'])">
+              <!-- <p><kbd>$ {{ $SPLUNK_HOME === '' ? './':$SPLUNK_HOME }}{{ $SPLUNK_HOME[$SPLUNK_HOME.length - 1] === '/' || $SPLUNK_HOME === '' ? 'bin/splunk':'/bin/splunk'}} {{ command }}</kbd></p> -->
+              <p ng-bind-html="cliConfigCommand.join('</br>')">
+                <!-- {{ cliConfigCommandString }} -->
+              </p>
+            </div>
+          </div>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- inputs.conf -->
+<div class="ui vertical stripe segment">
+  <div class="ui middle aligned stackable grid container">
+    <div class="row">
+      <div class="wide column">
+        <h3 class="ui header">Data Input</h3>
+        <p>
+          <div class="ui form stacked segment">
+            <div class="required field">
+              <label>Log file path (full path)</label>
+              <input type="text" name="file-path" placeholder="File path" ng-model="inputs.path">
+            </div>
+            <div class="required field">
+              <label>Index</label>
+              <input type="text" name="index-name" placeholder="Index name" ng-model="inputs.index">
+            </div>
+            <div class="required field">
+              <label>Source type (log type)</label>
+              <input type="text" name="sourcetype-name" placeholder="Source type" ng-model="inputs.sourcetype">
+            </div>
+            <div class="field">
+              <label>Source (default: full path)</label>
+              <input type="text" name="source-name" placeholder="Source" ng-model="inputs.source">
+            </div>
+            <div class="required inline field" ng-init="inputs.followTail = false">
+              <div class="ui checkbox" ng-click="inputs.followTail = !inputs.followTail">
+                <input type="checkbox">
+                <label>Follow tail</label>
+              </div>
+            </div>
+          </div>
+        </p>
+        <div class="ui horizontal divider">
+          RESULT
+        </div>
+        <p>
+          <h5 class="ui top attached header left aligned">
+            inputs.conf
+          </h5>
+          <div class="ui attached segment left aligned">
+            <pre>{{ inputs.contents }}</pre>
+          </div>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- props.conf -->
+<div class="ui vertical stripe segment">
+  <div class="ui middle aligned stackable grid container">
+    <div class="row">
+      <div class="wide column">
+        <h3 class="ui header">Data Properties (apply to heavy forwarder)</h3>
+        <p>
+          <div class="ui form stacked segment">
+            <div class="inline fields" ng-init="props.spec = ''">
+              <label>&lt;spec&gt;:</label>
+              <div class="field">
+                <div class="ui radio checkbox" ng-click="props.spec = ''">
+                  <input type="radio" name="props.spec" checked tabindex="0" class="hidden">
+                  <label>Sourcetype(default)</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui radio checkbox" ng-click="props.spec = 'host::'">
+                  <input type="radio" name="props.spec" tabindex="0" class="hidden">
+                  <label>Host</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui radio checkbox" ng-click="props.spec = 'source::'">
+                  <input type="radio" name="props.spec" tabindex="0" class="hidden">
+                  <label>Source</label>
+                </div>
+              </div>
+            </div>
+            <div class="required field">
+              <label>Name/Path</label>
+              <input type="text" name="name-path" placeholder="Name or Path" ng-model="props.name">
+            </div>
+            <div class="required field">
+              <label>Index</label>
+              <input type="text" name="index-name" placeholder="Index name" ng-model="props.index">
+            </div>
+            <div class="required field">
+              <label>Source type (log type)</label>
+              <input type="text" name="sourcetype-name" placeholder="Source type" ng-model="props.sourcetype">
+            </div>
+            <div class="field">
+              <label>Source (default: full path)</label>
+              <input type="text" name="source-name" placeholder="Source" ng-model="props.source">
+            </div>
+            <div class="required inline field" ng-init="props.followTail = false">
+              <div class="ui checkbox" ng-click="props.followTail = !props.followTail">
+              <!-- <div class="ui checkbox"> -->
+                <input type="checkbox">
+                <label>Follow tail</label>
+              </div>
+            </div>
+          </div>
+        </p>
+        <div class="ui horizontal divider">
+          RESULT
+        </div>
+        <p>
+          <h5 class="ui top attached header left aligned">
+            props.conf
+          </h5>
+          <div class="ui attached segment left aligned">
+            <pre>{{ props.contents }}</pre>
+          </div>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- outputs.conf -->
+<div class="ui vertical stripe segment">
+  <div class="ui middle aligned stackable grid container">
+    <div class="row">
+      <div class="wide column">
+        <h3 class="ui header">Data Output</h3>
+        <p>
+          <div class="ui form stacked segment">
+            <div class="required field" ng-init="outputs.defaultGroup = []">
+              <label>Default group</label>
+              <select multiple="" class="ui dropdown" ng-model="outputs.defaultGroup" ng-options="group.name for group in outputs.tcpoutGroups track by group.name">
+                <option value="">Default group</option>
+              </select>
+            </div>
+            <div class="required inline field" ng-init="outputs.indexAndForward = false">
+              <div class="ui checkbox" ng-click="outputs.indexAndForward = !outputs.indexAndForward">
+                <input type="checkbox">
+                <label>Indexing &amp; Forward (heavy forwarder only)</label>
+              </div>
+            </div>
+            <div class="required field">
+              <label>Groups</label>
+              <div class="ui raised segments" ng-init="outputs.tcpoutGroups = []">
+                <div class="ui secondary segment" ng-repeat="group in outputs.tcpoutGroups">
+                  <a class="ui red right corner label" ng-click="outputs.tcpoutGroups.splice($index, 1)">
+                    <i class="fa fa-trash icon"></i>
+                  </a>
+                  <div class="required field">
+                    <label>TCP-Out group name</label>
+                    <input type="text" name="tcpout-group-name" placeholder="TCP-Out group name" ng-model="group.name" ng-change="tcpoutGroupNameChange(group.name, '{{group.name}}')">
+                  </div>
+                  <div class="required inline field" ng-init="group.autoLB = false">
+                    <div class="ui checkbox" ng-click="group.autoLB = !group.autoLB">
+                      <input type="checkbox" ng-checked="group.autoLB">
+                      <label>Auto Load-Balancing</label>
+                    </div>
+                  </div>
+                  <div class="required field">
+                    <label>Server</label>
+                    <div class="field" ng-repeat="server in group.servers track by $index">
+                      <div class="ui action input" ng-hide="$last">
+                        <input type="text" name="add-tcpout-server" placeholder="Server address (ex. 1.1.1.1:9997)" ng-model="group.servers[$index]">
+                        <button class="ui red right icon button" ng-click="group.servers.splice($index, 1)">
+                          <i class="fa fa-trash icon"></i>
+                        </button>
+                      </div>
+                      <div class="ui action input" ng-show="$last">
+                        <input type="text" name="add-tcpout-server" placeholder="Server address (ex. 1.1.1.1:9997)" ng-model="group.servers[$index]">
+                        <button class="ui red right icon button" ng-click="group.servers.splice($index, 1)">
+                          <i class="fa fa-trash icon"></i>
+                        </button>
+                        <button class="ui teal right icon button" ng-click="group.servers.push('')">
+                          <i class="fa fa-plus icon"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="ui segment">
+                  <button class="ui segment button teal fluid" ng-click="btnListener('addTcpGroup')"><i class="fa fa-plus icon"></i> Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </p>
+        <div class="ui horizontal divider">
+          RESULT
+        </div>
+        <p>
+          <h5 class="ui top attached header left aligned">
+            outputs.conf
+          </h5>
+          <div class="ui attached segment left aligned">
+            <pre>{{ outputs.contents }}</pre>
+          </div>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
